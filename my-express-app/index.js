@@ -20,6 +20,8 @@ app.get("/",(req,res)=>{
 
 app.post("/users",(req,res)=>{
     const {name, age} = req.body
+    console.log(req.body);
+    
     if(!name || !age){
         res.status(400).json({error: "Name or age cannot be null"})
     }
@@ -29,6 +31,11 @@ app.post("/users",(req,res)=>{
 
 app.get("/users/:id",(req,res)=>{
     const userId = req.params.id
+    console.log(req.params.id);
+    console.log(req.params);
+    console.log(req.body);
+    
+    
     if( userId<0 || userId>users.length){
         res.send(`UserId not found`)
     }
