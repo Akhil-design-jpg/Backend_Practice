@@ -12,6 +12,8 @@ const users = [{
     name: "Verma", age: 22
 },{
     name: "JohnDoe", age: 30
+},{
+    name: "Stark", age: 55
 }]
 
 app.get("/",(req,res)=>{
