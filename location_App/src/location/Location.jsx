@@ -37,6 +37,41 @@ const Location = () => {
     setPosition([data.latitude, data.longitude]);
   };
 
+  const shareLocation = async() =>{
+    if(position){
+        try {
+            const googleMapsLink = `https://www.google.com/maps?q=${position[0]},${position[1]}`;
+            navigator.clipboard.writeText(googleMapsLink)         
+                alert("location copied to clipboard")
+
+        } catch (error) {
+                console.log("Some error occured",error);
+                throw error
+        }
+       
+    }else{
+        alert("Error copying location")
+        shareViaWhatsapp()
+    }
+  }
+
+  const shareViaWhatsapp = async() =>{
+        if(position){
+            try {
+                const message = `https://www.google.com/maps?q=${position[0]},${position[1]}`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank")
+            } catch (error) {
+                console.error("Error fetching",error);
+                alert("Error fetching")
+                
+            }
+        }
+        else{
+            console.log("Error copying location");
+            
+        }
+  }
+
   const getPhonelocation = async () => {
     let phoneNumber = "+917876832723";
     let apilayer2 = "f46d0a34dd686d56d39e161ff21c2140";
@@ -57,7 +92,8 @@ const Location = () => {
     <>
       <div>
         <button onClick={getIplocation}>Get location</button>
-        <button onClick={getPhonelocation}>get phone location</button>
+        <button onClick={getPhonelocation}>get phone details</button>
+        <button onClick={shareLocation}>Copy your location</button>
 
         {phoneinfo && (
           <div>
