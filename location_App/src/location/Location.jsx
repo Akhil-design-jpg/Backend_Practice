@@ -64,7 +64,7 @@ const Location = () => {
             <h2>Phone number info</h2>
             <p>
               <strong>Valid: </strong>
-              {phoneinfo.valid ? "Yes" : "No"}
+              {phoneinfo.valid ? "true" : "false"}
             </p>
             <p>
               <strong>Number </strong>
