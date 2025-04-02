@@ -19,22 +19,29 @@ const Location = () => {
         },
         (error) => {
           console.error("Not supported ", error);
-          // getIplocation()
+          getIplocation()
         }
       );
     } else {
       console.error("Something went wrong , please try again");
-      // getIplocation(); // runs only when gps doesnot work properly
+      getIplocation(); // runs only when gps doesnot work properly
     }
   };
 
   const getIplocation = async () => {
-    let apiKey = "c0f5ce5239c24a4c9790726f55ade21b";
-    let response = await fetch(
-      `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`
-    );
-    let data = await response.json();
-    setPosition([data.latitude, data.longitude]);
+
+    try {
+      let apiKey = "c0f5ce5239c24a4c9790726f55ade21b";
+      let response = await fetch(
+        `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`
+      );
+      let data = await response.json();
+      setPosition([data.latitude, data.longitude]);
+      
+    } catch (error) {
+      console.log("Error on IPLocation",error);
+      
+    }
   };
 
   const shareLocation = async() =>{
@@ -91,7 +98,8 @@ const Location = () => {
   return (
     <>
       <div>
-        <button onClick={getIplocation}>Get location</button>
+        <button onClick={geolocation}>Get location</button>
+        <button onClick={getIplocation}>Get IP location </button>
         <button onClick={getPhonelocation}>get phone details</button>
         <button onClick={shareLocation}>Copy your location</button>
         <button onClick={shareViaWhatsapp}>Share via whatsApp</button>
