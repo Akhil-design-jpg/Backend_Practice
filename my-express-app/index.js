@@ -1,81 +1,112 @@
-import mongoose from 'mongoose';
-import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
+// import mongoose from 'mongoose';
+// import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
-const mongoURI =
-  'mongodb+srv://Akhil123:Akhil@123@cluster0.9rbxdx4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+import express from "express"
+import { ApiError } from "./ApiError.js"
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 10000, // 10 sec timeout
-    });
-    console.log('✅ MongoDB Connected');
-  } catch (err) {
-    console.error('❌ Error connecting to MongoDB:', err);
-    process.exit(1);
-  }
-};
+const app = express()
 
-const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-});
 
-userSchema.plugin(aggregatePaginate);
-const User = mongoose.model('User', userSchema);
 
-const seedUsers = async () => {
-  try {
-    if (mongoose.connection.readyState !== 1) {
-      console.log('⏳ Waiting for MongoDB connection...');
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      return seedUsers();
-    }
+app.get("/",(req,res,next)=>{
+  next(new ApiError(403, "Access denied"))// pass error to middleware
+})
 
-    console.log('✅ Seeding users...');
-    await User.deleteMany({});
-    await User.insertMany([
-      { name: 'Alice', age: 25 },
-      { name: 'Bob', age: 30 },
-      { name: 'Charlie', age: 35 },
-      { name: 'David', age: 40 },
-      { name: 'Eva', age: 45 },
-      { name: 'Frank', age: 50 },
-    ]);
-    console.log('✅ Sample users added');
-  } catch (error) {
-    console.log('❌ Error seeding users:', error);
-  }
-};
 
-const getUsersPaginated = async (page, limit) => {
-  try {
-    const aggregateQuery = User.aggregate([
-      { $match: { age: { $gte: 30 } } },
-      { $sort: { age: 1 } },
-    ]);
+// global error handler middleware
+app.use((err,req,res,next)=>{
+  console.error(err.stack); // log error stack
+  res.status(err.statusCode || 500).json({
+    success: err.success,
+    message: err.message,
+    errors: err.errors,
+  })
+  
+})
 
-    const options = { page, limit };
-    const result = await User.aggregatePaginate(aggregateQuery, options);
-    console.log('📌 Paginated Result:', JSON.stringify(result, null, 2));
-  } catch (error) {
-    console.log(`❌ Unexpected Error: ${error}`);
-  }
-};
+app.listen(8000,()=>{
+  console.log(`App listening to PORTAL: ${8000}`);
+  
+})
 
-// ✅ **Ensure MongoDB is connected before running queries**
-(async () => {
-  try {
-    await connectDB(); // ✅ Connect first
-    await seedUsers();
-    await getUsersPaginated(1, 3);
-  } catch (error) {
-    console.log('❌ Error in main function:', error);
-  } finally {
-    mongoose.disconnect();
-    console.log('🔌 MongoDB Disconnected');
-  }
-})();
+
+
+
+// const mongoURI =
+//   'mongodb+srv://Akhil123:Akhil@123@cluster0.9rbxdx4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect(mongoURI, {
+//       serverSelectionTimeoutMS: 10000, // 10 sec timeout
+//     });
+//     console.log('✅ MongoDB Connected');
+//   } catch (err) {
+//     console.error('❌ Error connecting to MongoDB:', err);
+//     process.exit(1);
+//   }
+// };
+
+// const userSchema = new mongoose.Schema({
+//   name: String,
+//   age: Number,
+// });
+
+// userSchema.plugin(aggregatePaginate);
+// const User = mongoose.model('User', userSchema);
+
+// const seedUsers = async () => {
+//   try {
+//     if (mongoose.connection.readyState !== 1) {
+//       console.log('⏳ Waiting for MongoDB connection...');
+//       await new Promise((resolve) => setTimeout(resolve, 3000));
+//       return seedUsers();
+//     }
+
+//     console.log('✅ Seeding users...');
+//     await User.deleteMany({});
+//     await User.insertMany([
+//       { name: 'Alice', age: 25 },
+//       { name: 'Bob', age: 30 },
+//       { name: 'Charlie', age: 35 },
+//       { name: 'David', age: 40 },
+//       { name: 'Eva', age: 45 },
+//       { name: 'Frank', age: 50 },
+//     ]);
+//     console.log('✅ Sample users added');
+//   } catch (error) {
+//     console.log('❌ Error seeding users:', error);
+//   }
+// };
+
+// const getUsersPaginated = async (page, limit) => {
+//   try {
+//     const aggregateQuery = User.aggregate([
+//       { $match: { age: { $gte: 30 } } },
+//       { $sort: { age: 1 } },
+//     ]);
+
+//     const options = { page, limit };
+//     const result = await User.aggregatePaginate(aggregateQuery, options);
+//     console.log('📌 Paginated Result:', JSON.stringify(result, null, 2));
+//   } catch (error) {
+//     console.log(`❌ Unexpected Error: ${error}`);
+//   }
+// };
+
+// // ✅ **Ensure MongoDB is connected before running queries**
+// (async () => {
+//   try {
+//     await connectDB(); // ✅ Connect first
+//     await seedUsers();
+//     await getUsersPaginated(1, 3);
+//   } catch (error) {
+//     console.log('❌ Error in main function:', error);
+//   } finally {
+//     mongoose.disconnect();
+//     console.log('🔌 MongoDB Disconnected');
+//   }
+// })();
 
 // import dotenv from "dotenv";
 // dotenv.config();
