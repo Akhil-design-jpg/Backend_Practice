@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+</head>
+<body style = "background-color: #212121; color: #fff;">
+   
+    <div class = "parent"><!-- THis is a comment -->
+        <div class="day">Monday</div>
+        <div class="day">Tuesday</div>
+        <div class="day">Wednesday</div>
+        <div class="day">Thursday</div>
+    </div>
+
+
+    <script>
+
+const parent = document.querySelector('.parent')
+
+parent.children[2 ].style.color = "orange"
+const dayOne = document.querySelector('.day');
+
+// console.log(dayOne);
+// console.log(dayOne.parentElement);
+// console.log(dayOne.nextElementSibling);
+
+console.log("NODES:", parent.childNodes);
+// child nodes
+// node list - browser ke behind the sene  mei kis tarah kaam hota hai 
+// dekhne ko toh div class 4 hi hai par node list 10 count karra hai 
+// node list space even though comment bhi count karra hai
+    </script> 
+</body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    hello
+
+    <script>
+        const xhr = new XMLHttpRequest();
+        console.log(xhr.readyState);
+        
+        xhr.open("GET","https://jsonplaceholder.typicode.com/posts/1", true)
+        console.log(xhr.readyState);
+        
+
+        xhr.onload = function(){
+            if(xhr.status === 200 && xhr.readyState == 4){
+                console.log(`working`,xhr.responseText);
+                console.log(xhr.readyState);
+                
+            }
+            else{
+                console.log(`some error occured check the status`,xhr.status);
+                
+            }
+        }
+
+        xhr.send()
+    </script>
+</body>
+</html> -->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Events</title>
+</head>
+<body style = "background-color: #414141; color: aliceblue">
+    <h2>Amazing image</h2>
+    <div >
+        <ul id="images">
+            <li><img width="200px" id="photoshop" src="https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="photoshop"></li>
+            <li><img width="200px" id="japan" src="https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="river" src="https://images.pexels.com/photos/3532551/pexels-photo-3532551.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="owl" src="https://images.pexels.com/photos/3532552/pexels-photo-3532552.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="prayer" src="https://images.pexels.com/photos/2522671/pexels-photo-2522671.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><a style="color: aliceblue;" href="https://google.com" id="google">Google</a></li>
+        </ul>
+   </div>
+</body>
+<script> --> 
+
+// document.getElementById("owl").onclick = function() {
+//     alert("owl clicked!");// after clicking at the picture of the owl it will show an alert message of "owl clicked"
+// } 
+// type event, timestamp (date activities), defaultPrevented
+// target, toElement, srcElement, currentTarget, screenY (all these are HW study them)
+// altkey, ctrlkey, shiftkey, keycode ( these two study them)
+
+// attachEvent() used in early times 
+// jQuery ka bhi ek framework tha - onEventListener
+
+
+// document.getElementById('owl').addEventListener("click", function(e){// isme ek third parameter bhi lete hai true/false kai baar kuchh aisi applications bhi hoti hai jo bina true or false likhe complete hi ni hoti
+//     // alert("owl clicked!");
+
+
+// }  //, false(default bhi false hi hota hai)
+// ,false) // Event bubbling - neeche se upar ko print hota hai see example of image and owl below 
+// and event capturing in true or false
+
+
+
+<!-- // Event propogation /bubbling - pehle <li> print hoga phir <ul> images wala  -->
+// jo bhi script ko track karri hai badi element mei inside se outside (chhote se bada print)
+// document.getElementById('images').addEventListener('click',function(e){
+//     console.log("Clicked inside the ul");
+// },false)
+
+// document.getElementById('owl').addEventListener('click',function(e){
+//     console.log("Owl Clicked");
+//     e.stopPropagation() // isse bubbling ni hogi print mei false lagane ke baad bhi
+// },false)// event bubble hoke upar ke element bhi nahi jaaega only (owl Clicked hi print hoga)
+// // Event capturing - pehle clicked inside the ul print hoga phir owl clicked print hoga vise versa of event bubbling
+
+
+// document.getElementById('google').addEventListener('click', (e)=>{
+//     e.preventDefault(); // google link will be clicked but will not move to google website
+//     e.stopPropagation();
+//     console.log("google clicked");
+// },false)
+
+
+//     document.querySelector('#images').addEventListener('click',function(e){
+//         console.log(e.target.parentNode);// kis target se event occur hora hai matlab konsi html line mei hai ye 
+<!-- //         //output-  <img width="200px" id="photoshop" src="https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="photoshop"> -->
+// // parentNode (li)- is the paretNode
+//         console.log((e.target.tagName));// tagName batata hai ki element image hai ya link hai jo bhi hai 
+
+//          // image aur uska parentNode (li) bhi remove hojaega
+//         if(e.target.tagName === 'IMG'){
+//             console.log(e.target.id);
+//             let removeIt = e.target.parentNode;
+//              removeIt.remove()
+//         }
+        
+        
+//         // removeIt.parentNode.removeChild(removeIt);
+//         // iss line mei parentNode (ul) hai aur removeChild() (li) hai isliye (li) bhi remove hoyga
+        
+   
+<!-- //     },false)
+
+
+
+
+</script>
+    
+
+    
+</body>
+</html> -->
